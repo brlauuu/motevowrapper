@@ -3,19 +3,20 @@
 Simple Python parser for MotEvo files.
 
 To install, run:
-```
+
+```bash
 pip install motevowrapper
 ```
 
 ## MotEvo
 
-[MotEvo](https://pubmed.ncbi.nlm.nih.gov/22334039/)<sup>1</sup> is a Bayesian probabilistic model for prediction of transcription factor binding sites (TFBSs) for a given set of position weight matrices (PWMs) and DNA sequences. It was developed by van Nimwegen lab at the Biozentrum (University of Basel, Switzerland) and it can be acquired [here](https://swissregulon.unibas.ch/sr/software).
+[MotEvo](https://pubmed.ncbi.nlm.nih.gov/22334039/) (Arnold et al. 2012) is a Bayesian probabilistic model for prediction of transcription factor binding sites (TFBSs) for a given set of position weight matrices (PWMs) and DNA sequences. It was developed by van Nimwegen lab at the Biozentrum (University of Basel, Switzerland) and it can be acquired [here](https://swissregulon.unibas.ch/sr/software).
 
 This repository contains the source code for a simple Python package for parsing MotEvo output files.
 
 MotEvo produces 2 files: `sites` and `priors` file. Usage of the package is simple. For a given MotEvo sites file stored at `/path/to/sites_MOTIF.wm` by calling:
 
-```
+```python
 import motevowrapper as mp
 
 df_sites = mp.parse_sites('/path/to/sites_MOTIF.wm') # Motif binding sites
