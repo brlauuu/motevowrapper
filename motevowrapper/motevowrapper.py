@@ -104,3 +104,7 @@ def print_help():
         "Simple Python wrapper for MotEvo."
         "For more details, go to https://github.com/brlauuu/motevowrapper"
     )
+
+
+def run():
+    assert False, "Not implemented yet!"
