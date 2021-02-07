@@ -3,4 +3,5 @@ __pycache__/*
 settings.json
 build/*
 dist/*
+tmp/*
 motevoparser.egg-info/*
