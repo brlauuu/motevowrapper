@@ -171,6 +171,15 @@ class TestMotevoWrapper(unittest.TestCase):
 
         assert_frame_equal(values_df, results_df, check_dtype=False)
 
+    def test_motevo_run(self):
+        assert False, "Not implemented!"
+
+    def test_installation(self):
+        assert False, "Not implemented!"
+
+    def test_ufe_run(self):
+        assert False, "Not implemented!"
+
 
 if __name__ == "__main__":
     unittest.main()
