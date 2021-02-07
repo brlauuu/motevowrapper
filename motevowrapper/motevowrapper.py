@@ -1,9 +1,32 @@
 import os
 import re
 import logging
+import subprocess
 import pandas as pd
 
+
 logger = logging.getLogger(__name__)
+
+
+def shell_call(command):
+    """
+    Method that performs a shell call while not forwarding stdout and stderr.
+    """
+    try:
+        exit_code = subprocess.run(
+            command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        )
+        return exit_code.returncode
+
+    except subprocess.CalledProcessError as cpe_exp:
+        err = cpe_exp.stderr.decode("utf-8")
+        print("CalledProcessError exception occurred! Error:")
+        print(err)
+        return cpe_exp.returncode
+    except Exception as exp:
+        print("Unknown exception occurred! Error:")
+        print(exp)
+        return exp.returncode
 
 
 def parse_sites(path, verbose=False):
@@ -104,6 +127,10 @@ def print_help():
         "Simple Python wrapper for MotEvo."
         "For more details, go to https://github.com/brlauuu/motevowrapper"
     )
+
+
+def check_installation():
+    shell_call(["motevo"])
 
 
 def run():
