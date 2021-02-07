@@ -129,7 +129,8 @@ def parse_priors(path, verbose=False):
 def print_help():
     print(
         "Simple Python wrapper for MotEvo."
-        "For more details, go to https://github.com/brlauuu/motevowrapper"
+        "For more details on usage check documentation at"
+        "https://github.com/brlauuu/motevowrapper."
     )
 
 
@@ -147,5 +148,93 @@ def check_installation():
         )
 
 
-def run():
-    assert False, "Not implemented yet!"
+def run_motevo(
+    sequences_file=None,  # Or alignments file
+    wm_path=None,
+    working_directory="./",
+    mode="TFBS",
+    tree=None,
+    ref_species=None,
+    em_prior=None,
+    ufe_wm_prior=None,
+    ufe_wm_file=None,
+    ufe_wm_len=None,
+    background_prior=None,
+    bgA=0.25,
+    bgT=0.25,
+    bgG=0.25,
+    bgC=0.25,
+    sites_file=None,
+    priors_file=None,
+    print_site_als=1,
+    minposterior=0.1,
+    verbose=False,
+):
+    # Check if MotEvo is installed
+    assert shell_call(["motevo"]).returncode == 0, (
+        "Could not find MotEvo. Please check installation"
+        "first by running `check_installation()` method!"
+    )
+
+    # Read Position Weight Matrix (PWM) name
+    pwm_name = wm_path[wm_path.rfind("/") + 1 :]
+
+    if not sites_file:
+        sites_file = f"sites_{pwm_name}"
+    if not priors_file:
+        priors_file = f"priors_{pwm_name}"
+
+    # Load PWM length
+    with open(wm_path, "r") as f:
+        pwm_length = 0
+        for line in f:
+            if re.match("^\d+", line):
+                pwm_length += 1
+
+    # Create parameter file
+    motevo_parameters_path = os.path.join(working_directory, "motevo_parameters")
+    with open(motevo_parameters_path, "w") as f:
+        f.write(f"Mode {mode}\n")
+        f.write(f"TREE {tree}\n")
+        f.write(f"refspecies {ref_species}\n")
+        f.write(f"EMprior {em_prior}\n")
+        if ufe_wm_prior:
+            f.write(f"UFEwmprior {ufe_wm_prior}\n")
+        if ufe_wm_file:
+            f.write(f"UFEwmfile {ufe_wm_file}\n")
+        if ufe_wm_len and ufe_wm_len != "auto":
+            f.write(f"UFEwmlen {ufe_wm_len}\n")
+        elif ufe_wm_len == "auto":
+            f.write(f"UFEwmlen {pwm_length}\n")
+        f.write(f"bgprior {background_prior}\n")
+        f.write(f"bg A {bgA}\n")
+        f.write(f"bg T {bgT}\n")
+        f.write(f"bg G {bgG}\n")
+        f.write(f"bg C {bgC}\n")
+        f.write(f"sitefile {sites_file}\n")
+        f.write(f"priorfile {priors_file}\n")
+        f.write(f"printsiteals {print_site_als}\n")
+        f.write(f"minposterior {minposterior}\n")
+
+    if verbose:
+        print(f"Generated parameters file at: {motevo_parameters_path}")
+
+    # Remove existing MotEvo outputs
+    if os.path.exists(sites_file):
+        os.remove(sites_file)
+    if os.path.exists(priors_file):
+        os.remove(priors_file)
+
+    # Run MotEvo
+    result = shell_call(["motevo", sequences_file, motevo_parameters_path, wm_path])
+
+    # Check result
+    if result.returncode == 0:
+        if verbose:
+            print(
+                f"MotEvo ran successfully! Please"
+                f"check results at: {sitefile} and {priorfile}"
+            )
+    else:
+        print("MotEvo run failed!")
+
