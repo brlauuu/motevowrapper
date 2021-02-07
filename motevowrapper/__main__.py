@@ -1,4 +1,3 @@
-import sys
 from motevowrapper import print_help
 
 if __name__ == "__main__":

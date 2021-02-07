@@ -128,8 +128,8 @@ def parse_priors(path, verbose=False):
 
 def print_help():
     print(
-        "Simple Python wrapper for MotEvo."
-        "For more details on usage check documentation at"
+        "Simple Python wrapper for MotEvo. "
+        "For more details on usage check documentation at "
         "https://github.com/brlauuu/motevowrapper."
     )
 
@@ -176,6 +176,9 @@ def run_motevo(
         "first by running `check_installation()` method!"
     )
 
+    # Change directory to working_directory
+    os.chdir(working_directory)
+
     # Read Position Weight Matrix (PWM) name
     pwm_name = wm_path[wm_path.rfind("/") + 1 :]
 
@@ -192,7 +195,7 @@ def run_motevo(
                 pwm_length += 1
 
     # Create parameter file
-    motevo_parameters_path = os.path.join(working_directory, "motevo_parameters")
+    motevo_parameters_path = "motevo_parameters"
     with open(motevo_parameters_path, "w") as f:
         f.write(f"Mode {mode}\n")
         f.write(f"TREE {tree}\n")

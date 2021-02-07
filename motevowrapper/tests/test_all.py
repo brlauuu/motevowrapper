@@ -1,11 +1,12 @@
-from motevowrapper import parse_sites, parse_priors
+from motevowrapper import parse_sites, parse_priors, run_motevo, shell_call
 import unittest
 import os
 import pandas as pd
 from pandas.util.testing import assert_frame_equal
 
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
-BASE_PATH = os.path.join(BASE_PATH, "data")
+DATA_PATH = os.path.join(BASE_PATH, "data")
+OUTPUT_PATH = os.path.join(BASE_PATH, "output")
 
 
 class TestMotevoWrapper(unittest.TestCase):
@@ -149,15 +150,15 @@ class TestMotevoWrapper(unittest.TestCase):
         }
 
         values_df = pd.DataFrame.from_dict(dict)
-        results_df = parse_sites(os.path.join(BASE_PATH, "sites_REST.wm"))
+        results_df = parse_sites(os.path.join(DATA_PATH, "sites_REST.wm"))
 
         assert_frame_equal(values_df, results_df, check_dtype=False)
 
     def test_parsing_priors(self):
         motifs = ["REST", "background", "UFEwm"]
-        final_priors = [2.52746e-05, 0.817689, 0.182286]
-        nr_of_sites = [198.614, 6.42558e06, 1.43245e06]
-        densities = [0.000114236, 0.17599, 0.823896]
+        final_priors = [0.00310981, 0.828626, 0.168265]
+        nr_of_sites = [7.04002, 1875.85, 380.919]
+        densities = [0.0147501, 0.187155, 0.798095]
 
         dict = {
             "motif": motifs,
@@ -167,18 +168,40 @@ class TestMotevoWrapper(unittest.TestCase):
         }
 
         values_df = pd.DataFrame.from_dict(dict)
-        results_df = parse_priors(os.path.join(BASE_PATH, "priors_REST.wm"))
+        results_df = parse_priors(os.path.join(DATA_PATH, "priors_REST.wm"))
 
         assert_frame_equal(values_df, results_df, check_dtype=False)
 
     def test_motevo_run(self):
-        assert False, "Not implemented!"
+        result = run_motevo(
+            sequences_file=os.path.join(DATA_PATH, "zebrafish_alignments.aln"),
+            working_directory=OUTPUT_PATH,
+            wm_path=os.path.join(DATA_PATH, "pwmdir", "REST.wm"),
+            tree="((((astMex:0.415917,pygNat:0.449133):0.099801,ictPun:0.50305):0.04815395,danRer11:0.55291):0.0098669,esoLuc:0.7121605);",
+            ref_species="danRer11",
+            em_prior=0,
+            ufe_wm_prior=500,
+            ufe_wm_file=os.path.join(DATA_PATH, "UFEmodel.dr11"),
+            ufe_wm_len="auto",
+            background_prior=0.8,
+        )
+        self.assertEqual(result[0], "sites_REST.wm")
+        results_1 = parse_sites(os.path.join(DATA_PATH, "sites_REST.wm"))
+        results_2 = parse_sites(os.path.join(OUTPUT_PATH, "sites_REST.wm"))
+        assert_frame_equal(results_1, results_2, check_dtype=False)
+
+        self.assertEqual(result[1], "priors_REST.wm")
+        results_1 = parse_sites(os.path.join(DATA_PATH, "priors_REST.wm"))
+        results_2 = parse_sites(os.path.join(OUTPUT_PATH, "priors_REST.wm"))
+        assert_frame_equal(results_1, results_2, check_dtype=False)
 
     def test_installation(self):
-        assert False, "Not implemented!"
+        result = shell_call(["motevo"])
+        self.assertEqual(result.returncode, 0)
 
-    def test_ufe_run(self):
-        assert False, "Not implemented!"
+    # def test_ufe_run(self):
+    #     # TODO:
+    #     assert False, "Not implemented!"
 
 
 if __name__ == "__main__":
