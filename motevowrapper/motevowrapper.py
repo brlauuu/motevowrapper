@@ -238,3 +238,5 @@ def run_motevo(
     else:
         print("MotEvo run failed!")
 
+    return sites_file, priors_file
+
