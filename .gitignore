@@ -4,4 +4,5 @@ settings.json
 build/*
 dist/*
 tmp/*
-motevoparser.egg-info/*
+motevowrapper/tests/output/*
+motevowrapper.egg-info/*

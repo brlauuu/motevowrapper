@@ -1,12 +1,15 @@
-from motevowrapper import parse_sites, parse_priors, run_motevo, shell_call
 import unittest
 import os
 import pandas as pd
 from pandas.util.testing import assert_frame_equal
 
+from motevowrapper import parse_sites, parse_priors, run_motevo, shell_call
+
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 DATA_PATH = os.path.join(BASE_PATH, "data")
 OUTPUT_PATH = os.path.join(BASE_PATH, "output")
+if not os.path.exists(OUTPUT_PATH):
+    os.mkdir(OUTPUT_PATH)
 
 
 class TestMotevoWrapper(unittest.TestCase):
