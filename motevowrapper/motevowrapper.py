@@ -8,25 +8,29 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def shell_call(command):
+def shell_call(command, verbose=False):
     """
     Method that performs a shell call while not forwarding stdout and stderr.
     """
     try:
-        exit_code = subprocess.run(
-            command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-        )
-        return exit_code.returncode
+        if verbose:
+            result = subprocess.run(command, capture_output=True)
+        else:
+            result = subprocess.run(
+                command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            )
+        return result
 
     except subprocess.CalledProcessError as cpe_exp:
         err = cpe_exp.stderr.decode("utf-8")
-        print("CalledProcessError exception occurred! Error:")
-        print(err)
-        return cpe_exp.returncode
+        print(f"CalledProcessError exception occurred! Error: {err}")
+        print(f"Full exception:\n{cpe_exp}")
+        return cpe_exp
     except Exception as exp:
-        print("Unknown exception occurred! Error:")
-        print(exp)
-        return exp.returncode
+        err = exp.stderr.decode("utf-8")
+        print(f"Unknown exception occurred! Error:{err}")
+        print(f"Full exception:\n{exp}")
+        return exp
 
 
 def parse_sites(path, verbose=False):
@@ -130,7 +134,17 @@ def print_help():
 
 
 def check_installation():
-    shell_call(["motevo"])
+    result = shell_call(["motevo"])
+    if result.returncode != 0:
+        print(
+            "MotEvo cannot be found on the system. Please follow the instructions"
+            "at https://github.com/brlauuu/motevowrapper on how to download MotEvo."
+        )
+    else:
+        print(
+            f"MotEvo successfully found on the system at: "
+            f"{shell_call(['which', 'motevo'], verbose=True).stdout.decode('utf-8')}"
+        )
 
 
 def run():
