@@ -233,7 +233,7 @@ def run_motevo(
         if verbose:
             print(
                 f"MotEvo ran successfully! Please"
-                f"check results at: {sitefile} and {priorfile}"
+                f"check results at: {sites_file} and {priors_file}"
             )
     else:
         print("MotEvo run failed!")
