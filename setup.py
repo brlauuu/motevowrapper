@@ -27,15 +27,13 @@ setup(
     packages=["motevowrapper"],
     version=version,
     license="MIT",
-    description="Simple Python MotEvo parser.",
+    description="Simple Python MotEvo wrapper.",
     author="Đorđe Relić",
     author_email="dorde.relic@protonmail.com",
     url="https://github.com/brlauuu/motevowrapper",
     download_url=f"https://github.com/brlauuu/motevowrapper/archive/0.0.1.tar.gz",
-    keywords=["MotEvo", "parser", "binding", "sites"],
-    install_requires=[
-        "pandas",
-    ],
+    keywords=["MotEvo", "wrapper", "binding", "sites", "tfbs-discovery"],
+    install_requires=["pandas",],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Science/Research",
@@ -46,7 +44,5 @@ setup(
     long_description_content_type="text/markdown",
     long_description=README,
     include_package_data=True,
-    package_data={
-        "motevowrapper": get_motevo_files(),
-    },
+    package_data={"motevowrapper": get_motevo_files(),},
 )
