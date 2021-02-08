@@ -31,7 +31,7 @@ setup(
     author="Đorđe Relić",
     author_email="dorde.relic@protonmail.com",
     url="https://github.com/brlauuu/motevowrapper",
-    download_url=f"https://github.com/brlauuu/motevowrapper/archive/0.0.1.tar.gz",
+    download_url=f"https://github.com/brlauuu/motevowrapper/archive/v{version}.tar.gz",
     keywords=["MotEvo", "wrapper", "binding", "sites", "tfbs-discovery"],
     install_requires=["pandas",],
     classifiers=[
