@@ -1,3 +1,5 @@
+![Unit Tests](https://github.com/brlauuu/motevowrapper/workflows/Unit%20Tests/badge.svg)
+
 # motevowrapper
 
 Simple Python parser for MotEvo files.
