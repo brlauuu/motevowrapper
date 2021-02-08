@@ -1,12 +1,13 @@
 import unittest
 import os
 import pandas as pd
-from pandas.util.testing import assert_frame_equal
+from pandas.util.testing import assert_equal, assert_frame_equal
 
 from motevowrapper.motevowrapper import (
     parse_sites,
     parse_priors,
     run_motevo,
+    run_ufe,
     shell_call,
 )
 
@@ -189,7 +190,7 @@ class TestMotevoWrapper(unittest.TestCase):
             ref_species="danRer11",
             em_prior=0,
             ufe_wm_prior=500,
-            ufe_wm_file=os.path.join(DATA_PATH, "UFEmodel.dr11"),
+            ufe_wm_file=os.path.join(DATA_PATH, "UFEmodel"),
             ufe_wm_len="auto",
             background_prior=0.8,
         )
@@ -209,9 +210,24 @@ class TestMotevoWrapper(unittest.TestCase):
         result = shell_call(["runUFE"])
         self.assertEqual(result.returncode, 1)
 
-    # def test_ufe_run(self):
-    #     # TODO:
-    #     assert False, "Not implemented!"
+    def test_ufe_run(self):
+        run_ufe(
+            tree_file_path=os.path.join(DATA_PATH, "tree_file"),
+            output_path=os.path.join(OUTPUT_PATH, "UFEmodel"),
+        )
+
+        f = open(os.path.join(OUTPUT_PATH, "UFEmodel"))
+        result = f.readlines()
+        f.close()
+
+        g = open(os.path.join(DATA_PATH, "UFEmodel"))
+        check = g.readlines()
+        g.close()
+
+        self.assertEqual(len(result), len(check))
+
+        for i in range(len(result)):
+            self.assertEqual(result[i], check[i])
 
 
 if __name__ == "__main__":

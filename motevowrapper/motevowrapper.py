@@ -26,7 +26,6 @@ def shell_call(command, verbose=False):
         return cpe_exp
     except Exception as exp:
         print(f"Unknown exception occurred! Exception:\n{exp}")
-        print(f"Full exception:\n{exp}")
         return exp
 
 
@@ -259,3 +258,25 @@ def run_motevo(
         os.path.join(working_directory, priors_file),
     )
 
+
+def run_ufe(
+    tree_file_path, bg_A=0.25, bg_C=0.25, bg_G=0.25, bg_T=0.25, output_path=None
+):
+    # Check if runUFE is installed
+    assert shell_call(["runUFE"]).returncode == 1, (
+        "Could not find runUFE. Please check installation"
+        "first by running `check_installation()` method!"
+    )
+
+    if not output_path:
+        output_path = "UFE_model"
+
+    result = shell_call(
+        ["runUFE", tree_file_path, str(bg_A), str(bg_C), str(bg_G), str(bg_T)],
+        verbose=True,
+    )
+
+    with open(output_path, "w") as f:
+        f.write(result.stdout.decode("utf-8"))
+
+    return os.path.join(os.getcwd(), output_path)
