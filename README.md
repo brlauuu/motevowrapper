@@ -1,4 +1,4 @@
-![Tests](https://github.com/brlauuu/motevowrapper/workflows/Unit%20Tests/badge.svg) ![Upload PyPi](https://github.com/brlauuu/motevowrapper/workflows/Upload%20Python%20Package%20to%20Pip/badge.svg)
+![Tests](https://github.com/brlauuu/motevowrapper/workflows/Tests/badge.svg) ![Upload to PyPi](https://github.com/brlauuu/motevowrapper/workflows/Upload%20to%20PyPi/badge.svg)
 
 # motevowrapper
 
