@@ -193,14 +193,14 @@ class TestMotevoWrapper(unittest.TestCase):
             ufe_wm_len="auto",
             background_prior=0.8,
         )
-        self.assertEqual(result[0], "sites_REST.wm")
+        self.assertEqual(result[0], os.path.join(OUTPUT_PATH, "sites_REST.wm"))
         results_1 = parse_sites(os.path.join(DATA_PATH, "sites_REST.wm"))
         results_2 = parse_sites(os.path.join(OUTPUT_PATH, "sites_REST.wm"))
         assert_frame_equal(results_1, results_2, check_dtype=False)
 
-        self.assertEqual(result[1], "priors_REST.wm")
-        results_1 = parse_sites(os.path.join(DATA_PATH, "priors_REST.wm"))
-        results_2 = parse_sites(os.path.join(OUTPUT_PATH, "priors_REST.wm"))
+        self.assertEqual(result[1], os.path.join(OUTPUT_PATH, "priors_REST.wm"))
+        results_1 = parse_priors(os.path.join(DATA_PATH, "priors_REST.wm"))
+        results_2 = parse_priors(os.path.join(OUTPUT_PATH, "priors_REST.wm"))
         assert_frame_equal(results_1, results_2, check_dtype=False)
 
     def test_installation(self):

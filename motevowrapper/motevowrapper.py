@@ -48,8 +48,6 @@ def parse_sites(path, verbose=False):
                 reference_promoter = columns[4].strip()
 
                 j = i + 1
-                # if j == len(lines):
-                #     break
                 while j < len(lines) and not re.match(r"^\d+", lines[j]):
                     columns = lines[j].strip().split(" ")
                     sequence = columns[0]
@@ -188,6 +186,7 @@ def run_motevo(
     )
 
     # Change directory to working_directory
+    cwd = os.getcwd()
     os.chdir(working_directory)
 
     # Read Position Weight Matrix (PWM) name
@@ -252,5 +251,11 @@ def run_motevo(
     else:
         print("MotEvo run failed!")
 
-    return sites_file, priors_file
+    # Change back to working directory
+    os.chdir(cwd)
+
+    return (
+        os.path.join(working_directory, sites_file),
+        os.path.join(working_directory, priors_file),
+    )
 
