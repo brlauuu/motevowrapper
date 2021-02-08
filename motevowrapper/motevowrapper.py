@@ -3,6 +3,8 @@ import re
 import logging
 import subprocess
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 logger = logging.getLogger(__name__)
@@ -29,7 +31,7 @@ def shell_call(command, verbose=False):
         return exp
 
 
-def parse_sites(path, verbose=False):
+def parse_sites(path):
     if not os.path.exists(path):
         logger.error(f"Path doesn't exist: {path}")
 
@@ -75,7 +77,7 @@ def parse_sites(path, verbose=False):
     return pd.DataFrame(prep)
 
 
-def parse_priors(path, verbose=False):
+def parse_priors(path):
     if not os.path.exists(path):
         logger.error(f"Path doesn't exist: {path}")
 
@@ -280,3 +282,11 @@ def run_ufe(
         f.write(result.stdout.decode("utf-8"))
 
     return os.path.join(os.getcwd(), output_path)
+
+
+def plot_site_distribution(motif, df, kind="ecdf"):
+    sns.set_context("talk")
+    sns.set_style("whitegrid")
+    sns.displot(data=df.groupby("reference_promoter").sum(), kind=kind, x="posterior")
+    plt.title(motif)
+    plt.show()
