@@ -20,6 +20,14 @@ This repository contains the source code for a simple Python package that allows
 2. Parse MotEvo output files
 3. Visualize visualize site density per motif
 
+## Installing MotEvo
+
+MotEvo source code can be downloaded from the [SwissRegulon website](https://swissregulon.unibas.ch/sr/software). You can either download the source and compile it, or download binaries for MacOS or Linux. Don't forget to add path to executables to your `.bashrc` or `.bash_profile`. You can do it by simply running
+
+```bash
+export PATH=$PATH:/path/to/motevo/bin
+```
+
 ## Running MotEvo from MotevoWrapper
 
 Method for running MotEvo is `run_motevo(...)`. Method description is the following:
