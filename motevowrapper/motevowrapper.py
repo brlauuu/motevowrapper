@@ -22,13 +22,10 @@ def shell_call(command, verbose=False):
         return result
 
     except subprocess.CalledProcessError as cpe_exp:
-        err = cpe_exp.stderr.decode("utf-8")
-        print(f"CalledProcessError exception occurred! Error: {err}")
-        print(f"Full exception:\n{cpe_exp}")
+        print(f"CalledProcessError exception occurred! Exception:\n{cpe_exp}")
         return cpe_exp
     except Exception as exp:
-        err = exp.stderr.decode("utf-8")
-        print(f"Unknown exception occurred! Error:{err}")
+        print(f"Unknown exception occurred! Exception:\n{exp}")
         print(f"Full exception:\n{exp}")
         return exp
 
