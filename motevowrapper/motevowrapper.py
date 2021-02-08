@@ -200,6 +200,9 @@ def run_motevo(
     if not priors_file:
         priors_file = f"priors_{pwm_name}"
 
+    if not tree:
+        tree = f"({ref_species}: 1.0);"
+
     # Load PWM length
     with open(wm_path, "r") as f:
         pwm_length = 0
