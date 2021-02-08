@@ -19,7 +19,9 @@ def shell_call(command, verbose=False):
             result = subprocess.run(command, capture_output=True)
         else:
             result = subprocess.run(
-                command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                command,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
             )
         return result
 
@@ -145,7 +147,7 @@ def check_installation():
         )
 
     result = shell_call(["runUFE"])
-    if result.returncode != 0:
+    if result.returncode != 1:
         print(
             "runUFE executable cannot be found on the system. "
             "Please follow the instructions "
