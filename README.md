@@ -1,3 +1,5 @@
+![Tests](https://github.com/brlauuu/motevowrapper/workflows/Tests/badge.svg) ![Upload to PyPi](https://github.com/brlauuu/motevowrapper/workflows/Upload%20to%20PyPi/badge.svg)
+
 # motevowrapper
 
 Simple Python parser for MotEvo files.
