@@ -138,13 +138,27 @@ def check_installation():
     result = shell_call(["motevo"])
     if result.returncode != 0:
         print(
-            "MotEvo cannot be found on the system. Please follow the instructions"
+            "MotEvo cannot be found on the system. Please follow the instructions "
             "at https://github.com/brlauuu/motevowrapper on how to download MotEvo."
         )
+        return
     else:
         print(
             f"MotEvo successfully found on the system at: "
             f"{shell_call(['which', 'motevo'], verbose=True).stdout.decode('utf-8')}"
+        )
+
+    result = shell_call(["runUFE"])
+    if result.returncode != 0:
+        print(
+            "runUFE executable cannot be found on the system. "
+            "Please follow the instructions "
+            "at https://github.com/brlauuu/motevowrapper on how to download MotEvo."
+        )
+    else:
+        print(
+            f"runUFE successfully found on the system at: "
+            f"{shell_call(['which', 'runUFE'], verbose=True).stdout.decode('utf-8')}"
         )
 
 

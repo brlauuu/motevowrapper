@@ -201,10 +201,12 @@ class TestMotevoWrapper(unittest.TestCase):
     def test_installation(self):
         result = shell_call(["motevo"])
         self.assertEqual(result.returncode, 0)
+        result = shell_call(["runUFE"])
+        self.assertEqual(result.returncode, 0)
 
-    # def test_ufe_run(self):
-    #     # TODO:
-    #     assert False, "Not implemented!"
+    def test_ufe_run(self):
+        # TODO:
+        assert False, "Not implemented!"
 
 
 if __name__ == "__main__":
