@@ -24,6 +24,7 @@ jobs:
           unzip motevo-1.12_linux.zip -d $HOME/
           echo "$(pwd)/motevo" >> $GITHUB_PATH
           echo "$(pwd)/runUFE" >> $GITHUB_PATH
+          echo $GITHUB_PATH
 
       - name: Run tests with unittest
         run: python -m unittest discover
