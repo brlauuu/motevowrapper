@@ -21,7 +21,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           curl -O https://www.swissregulon.unibas.ch/software/motevo/motevo-1.12_mac.zip
-          unzip motevo-1.12_linux.zip -d $HOME/
+          unzip motevo-1.12_mac.zip -d $HOME/
           echo "$HOME" >> $GITHUB_PATH
       - name: Run tests with unittest
         run: python -m unittest discover
