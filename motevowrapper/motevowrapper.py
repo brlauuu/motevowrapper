@@ -180,6 +180,7 @@ def run_motevo(
     priors_file=None,
     print_site_als=1,
     minposterior=0.1,
+    try_until_succeeding=False,
     verbose=False,
 ):
     # Check if MotEvo is installed
@@ -244,18 +245,38 @@ def run_motevo(
     if os.path.exists(priors_file):
         os.remove(priors_file)
 
-    # Run MotEvo
-    result = shell_call(["motevo", sequences_file, motevo_parameters_path, wm_path])
+    # Setting the status of running MotEvo
+    status = False
 
-    # Check result
-    if result.returncode == 0:
-        if verbose:
-            logger.info(
-                f"MotEvo ran successfully! Please"
-                f"check results at: {sites_file} and {priors_file}"
-            )
-    else:
-        logger.error("MotEvo run failed!")
+    while not status:
+        # Run MotEvo
+        result = shell_call(["motevo", sequences_file, motevo_parameters_path, wm_path])
+
+        # Check result
+        if result.returncode == 0:
+            if verbose:
+                logger.info(
+                    f"MotEvo ran successfully! Please"
+                    f"check results at: {sites_file} and {priors_file}"
+                )
+            status = True
+        else:
+            logger.error("MotEvo run failed!")
+            status = False
+
+        # Check if files were generated
+        if not os.path.exists(sites_file):
+            logger.error("MotEvo did not generate sites file.")
+            status = False
+
+        if not os.path.exists(priors_file):
+            logger.error("MotEvo did not generate priors file.")
+            status = False
+
+        # In case user wants to run only once, we break the loop
+        # Otherwise, MotEvo will be attempted to run until it succeeds
+        if not try_until_succeeding:
+            break
 
     # Change back to working directory
     os.chdir(cwd)
