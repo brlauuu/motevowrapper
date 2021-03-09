@@ -1,0 +1,27 @@
+name: Tests MacOS
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Python 3
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          curl -O https://www.swissregulon.unibas.ch/software/motevo/motevo-1.12_mac.zip
+          unzip motevo-1.12_linux.zip -d $HOME/
+          echo "$HOME" >> $GITHUB_PATH
+      - name: Run tests with unittest
+        run: python -m unittest discover
