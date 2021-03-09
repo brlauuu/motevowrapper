@@ -5,7 +5,7 @@ name: Upload to PyPi
 
 on:
   release:
-    types: [created]
+    types: [released]
 
 jobs:
   deploy:
@@ -24,8 +24,8 @@ jobs:
         pip install setuptools wheel twine
     - name: Build and publish
       env:
-        user: ${{ secrets.PYPI_USERNAME }}
-        password: ${{ secrets.PYPI_PASSWORD }}
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
       run: |
         python setup.py sdist bdist_wheel
         twine upload dist/*
