@@ -26,10 +26,10 @@ def shell_call(command, verbose=False):
         return result
 
     except subprocess.CalledProcessError as cpe_exp:
-        print(f"CalledProcessError exception occurred! Exception:\n{cpe_exp}")
+        logger.error(f"CalledProcessError exception occurred! Exception:\n{cpe_exp}")
         return cpe_exp
     except Exception as exp:
-        print(f"Unknown exception occurred! Exception:\n{exp}")
+        logger.error(f"Unknown exception occurred! Exception:\n{exp}")
         return exp
 
 
@@ -125,7 +125,7 @@ def parse_priors(path):
 
 
 def print_help():
-    print(
+    logger.info(
         "Simple Python wrapper for MotEvo. "
         "For more details on usage check documentation at "
         "https://github.com/brlauuu/motevowrapper."
@@ -135,26 +135,26 @@ def print_help():
 def check_installation():
     result = shell_call(["motevo"])
     if result.returncode != 0:
-        print(
+        logger.error(
             "MotEvo cannot be found on the system. Please follow the instructions "
             "at https://github.com/brlauuu/motevowrapper on how to download MotEvo."
         )
         return
     else:
-        print(
+        logger.info(
             f"MotEvo successfully found on the system at: "
             f"{shell_call(['which', 'motevo'], verbose=True).stdout.decode('utf-8')}"
         )
 
     result = shell_call(["runUFE"])
     if result.returncode != 1:
-        print(
+        logger.error(
             "runUFE executable cannot be found on the system. "
             "Please follow the instructions "
             "at https://github.com/brlauuu/motevowrapper on how to download MotEvo."
         )
     else:
-        print(
+        logger.info(
             f"runUFE successfully found on the system at: "
             f"{shell_call(['which', 'runUFE'], verbose=True).stdout.decode('utf-8')}"
         )
@@ -236,7 +236,7 @@ def run_motevo(
         f.write(f"minposterior {minposterior}\n")
 
     if verbose:
-        print(f"Generated parameters file at: {motevo_parameters_path}")
+        logger.info(f"Generated parameters file at: {motevo_parameters_path}")
 
     # Remove existing MotEvo outputs
     if os.path.exists(sites_file):
@@ -250,12 +250,12 @@ def run_motevo(
     # Check result
     if result.returncode == 0:
         if verbose:
-            print(
+            logger.info(
                 f"MotEvo ran successfully! Please"
                 f"check results at: {sites_file} and {priors_file}"
             )
     else:
-        print("MotEvo run failed!")
+        logger.error("MotEvo run failed!")
 
     # Change back to working directory
     os.chdir(cwd)
