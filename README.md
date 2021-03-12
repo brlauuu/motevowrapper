@@ -10,7 +10,7 @@ pip install motevowrapper
 
 [![Tests Ubuntu](https://github.com/brlauuu/motevowrapper/workflows/Tests/badge.svg)](https://github.com/brlauuu/motevowrapper/actions/workflows/python-tests.yml)
 [![Tests MacOS](https://github.com/brlauuu/motevowrapper/actions/workflows/python-tests-mac.yml/badge.svg)](https://github.com/brlauuu/motevowrapper/actions/workflows/python-tests-mac.yml)
-[![Upload Python Package](https://github.com/brlauuu/motevowrapper/actions/workflows/python-publish-to-pypi.yml/badge.svg?event=release)](https://github.com/brlauuu/motevowrapper/actions/workflows/python-publish-to-pypi.yml)
+[![Upload Python Package](https://github.com/brlauuu/motevowrapper/actions/workflows/python-publish-to-pypi.yml/badge.svg)](https://github.com/brlauuu/motevowrapper/actions/workflows/python-publish-to-pypi.yml)
 
 ## MotEvo
 
