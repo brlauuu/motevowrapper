@@ -19,9 +19,7 @@ def shell_call(command, verbose=False):
             result = subprocess.run(command, capture_output=True)
         else:
             result = subprocess.run(
-                command,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
+                command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             )
         return result
 
@@ -161,25 +159,38 @@ def check_installation():
 
 
 def run_motevo(
-    sequences_file=None,  # Or alignments file
+    sequences_file=None,
     wm_path=None,
     working_directory="./",
-    mode="TFBS",
-    tree=None,
-    ref_species=None,
-    em_prior=None,
-    ufe_wm_prior=None,
-    ufe_wm_file=None,
-    ufe_wm_len=None,
-    background_prior=None,
+    Mode="TFBS",
+    refspecies=None,
+    TREE=None,
+    restrictparses=None,
+    singlestrand=None,
+    bgprior=None,
+    EMprior=0,
+    priordiff=None,
+    UFEwmprior=None,
+    markovorderBG=None,
     bgA=0.25,
     bgT=0.25,
     bgG=0.25,
     bgC=0.25,
-    sites_file=None,
-    priors_file=None,
-    print_site_als=1,
+    mybgfile=None,
+    UFEwmfile=None,
+    UFEwmlen=None,
+    UFEprint=None,
+    UFEwmproffile=None,
+    sitefile=None,
+    priorfile=None,
+    loglikfile=None,
     minposterior=0.1,
+    printsiteals=1,
+    minposteriorWM=None,
+    wmdiff=None,
+    CRMfile=None,
+    winlen=None,
+    steplen=None,
     try_until_succeeding=False,
     verbose=False,
 ):
@@ -196,13 +207,13 @@ def run_motevo(
     # Read Position Weight Matrix (PWM) name
     pwm_name = wm_path[wm_path.rfind("/") + 1 :]
 
-    if not sites_file:
-        sites_file = f"sites_{pwm_name}"
-    if not priors_file:
-        priors_file = f"priors_{pwm_name}"
+    if not sitefile:
+        sitefile = f"sites_{pwm_name}"
+    if not priorfile:
+        priorfile = f"priors_{pwm_name}"
 
-    if not tree:
-        tree = f"({ref_species}: 1.0);"
+    if not TREE:
+        TREE = f"({refspecies}: 1.0);"
 
     # Load PWM length
     with open(wm_path, "r") as f:
@@ -214,36 +225,75 @@ def run_motevo(
     # Create parameter file
     motevo_parameters_path = "motevo_parameters"
     with open(motevo_parameters_path, "w") as f:
-        f.write(f"Mode {mode}\n")
-        f.write(f"TREE {tree}\n")
-        f.write(f"refspecies {ref_species}\n")
-        f.write(f"EMprior {em_prior}\n")
-        if ufe_wm_prior:
-            f.write(f"UFEwmprior {ufe_wm_prior}\n")
-        if ufe_wm_file:
-            f.write(f"UFEwmfile {ufe_wm_file}\n")
-        if ufe_wm_len and ufe_wm_len != "auto":
-            f.write(f"UFEwmlen {ufe_wm_len}\n")
-        elif ufe_wm_len == "auto":
+        if Mode:
+            f.write(f"Mode {Mode}\n")
+        if TREE:
+            f.write(f"TREE {TREE}\n")
+        if refspecies:
+            f.write(f"refspecies {refspecies}\n")
+        if bgprior:
+            f.write(f"bgprior {bgprior}\n")
+        if minposterior:
+            f.write(f"minposterior {minposterior}\n")
+        if sitefile:
+            f.write(f"sitefile {sitefile}\n")
+        if priorfile:
+            f.write(f"priorfile {priorfile}\n")
+        if bgA:
+            f.write(f"bg A {bgA}\n")
+        if bgT:
+            f.write(f"bg T {bgT}\n")
+        if bgG:
+            f.write(f"bg G {bgG}\n")
+        if bgC:
+            f.write(f"bg C {bgC}\n")
+        if mybgfile:
+            f.write(f"mybgfile {mybgfile}\n")
+        if EMprior:
+            f.write(f"EMprior {EMprior}\n")
+        if minposteriorWM:
+            f.write(f"minposteriorWM {minposteriorWM}\n")
+        if UFEwmprior:
+            f.write(f"UFEwmprior {UFEwmprior}\n")
+        if UFEwmfile:
+            f.write(f"UFEwmfile {UFEwmfile}\n")
+        if UFEwmlen and UFEwmlen != "auto":
+            f.write(f"UFEwmlen {UFEwmlen}\n")
+        elif UFEwmlen == "auto":
             f.write(f"UFEwmlen {pwm_length}\n")
-        f.write(f"bgprior {background_prior}\n")
-        f.write(f"bg A {bgA}\n")
-        f.write(f"bg T {bgT}\n")
-        f.write(f"bg G {bgG}\n")
-        f.write(f"bg C {bgC}\n")
-        f.write(f"sitefile {sites_file}\n")
-        f.write(f"priorfile {priors_file}\n")
-        f.write(f"printsiteals {print_site_als}\n")
-        f.write(f"minposterior {minposterior}\n")
+        if UFEwmproffile:
+            f.write(f"UFEwmproffile {UFEwmproffile}\n")
+        if UFEprint:
+            f.write(f"UFEprint {UFEprint}\n")
+        if wmdiff:
+            f.write(f"wmdiff {wmdiff}\n")
+        if winlen:
+            f.write(f"winlen {winlen}\n")
+        if steplen:
+            f.write(f"steplen {steplen}\n")
+        if markovorderBG:
+            f.write(f"markovorderBG {markovorderBG}\n")
+        if priordiff:
+            f.write(f"priordiff {priordiff}\n")
+        if restrictparses:
+            f.write(f"restrictparses {restrictparses}\n")
+        if loglikfile:
+            f.write(f"loglikfile {loglikfile}\n")
+        if CRMfile:
+            f.write(f"CRMfile {CRMfile}\n")
+        if singlestrand:
+            f.write(f"singlestrand {singlestrand}\n")
+        if printsiteals:
+            f.write(f"printsiteals {printsiteals}\n")
 
     if verbose:
         logger.info(f"Generated parameters file at: {motevo_parameters_path}")
 
     # Remove existing MotEvo outputs
-    if os.path.exists(sites_file):
-        os.remove(sites_file)
-    if os.path.exists(priors_file):
-        os.remove(priors_file)
+    if os.path.exists(sitefile):
+        os.remove(sitefile)
+    if os.path.exists(priorfile):
+        os.remove(priorfile)
 
     # Setting the status of running MotEvo
     status = False
@@ -257,7 +307,7 @@ def run_motevo(
             if verbose:
                 logger.info(
                     f"MotEvo ran successfully! Please"
-                    f"check results at: {sites_file} and {priors_file}"
+                    f"check results at: {sitefile} and {priorfile}"
                 )
             status = True
         else:
@@ -265,11 +315,11 @@ def run_motevo(
             status = False
 
         # Check if files were generated
-        if not os.path.exists(sites_file):
+        if not os.path.exists(sitefile):
             logger.error("MotEvo did not generate sites file.")
             status = False
 
-        if not os.path.exists(priors_file):
+        if not os.path.exists(priorfile):
             logger.error("MotEvo did not generate priors file.")
             status = False
 
@@ -282,8 +332,8 @@ def run_motevo(
     os.chdir(cwd)
 
     return (
-        os.path.join(working_directory, sites_file),
-        os.path.join(working_directory, priors_file),
+        os.path.join(working_directory, sitefile),
+        os.path.join(working_directory, priorfile),
     )
 
 
