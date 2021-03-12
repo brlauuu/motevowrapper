@@ -186,13 +186,13 @@ class TestMotevoWrapper(unittest.TestCase):
             sequences_file=os.path.join(DATA_PATH, "zebrafish_alignments.aln"),
             working_directory=OUTPUT_PATH,
             wm_path=os.path.join(DATA_PATH, "pwmdir", "REST.wm"),
-            tree="((((astMex:0.415917,pygNat:0.449133):0.099801,ictPun:0.50305):0.04815395,danRer11:0.55291):0.0098669,esoLuc:0.7121605);",
-            ref_species="danRer11",
-            em_prior=0,
-            ufe_wm_prior=500,
-            ufe_wm_file=os.path.join(DATA_PATH, "UFEmodel"),
-            ufe_wm_len="auto",
-            background_prior=0.8,
+            TREE="((((astMex:0.415917,pygNat:0.449133):0.099801,ictPun:0.50305):0.04815395,danRer11:0.55291):0.0098669,esoLuc:0.7121605);",
+            refspecies="danRer11",
+            EMprior=0,
+            UFEwmprior=500,
+            UFEwmfile=os.path.join(DATA_PATH, "UFEmodel"),
+            UFEwmlen="auto",
+            bgprior=0.8,
         )
         self.assertEqual(result[0], os.path.join(OUTPUT_PATH, "sites_REST.wm"))
         results_1 = parse_sites(os.path.join(DATA_PATH, "sites_REST.wm"))
