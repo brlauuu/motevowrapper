@@ -19,7 +19,9 @@ def shell_call(command, verbose=False):
             result = subprocess.run(command, capture_output=True)
         else:
             result = subprocess.run(
-                command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                command,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
             )
         return result
 
@@ -299,8 +301,12 @@ def run_motevo(
     status = False
 
     while not status:
+        command = ["motevo", sequences_file, motevo_parameters_path, wm_path]
+
+        if verbose:
+            print(f"MotEvo shell command:\n" f"{' '.join(command)}")
         # Run MotEvo
-        result = shell_call(["motevo", sequences_file, motevo_parameters_path, wm_path])
+        result = shell_call(command)
 
         # Check result
         if result.returncode == 0:
