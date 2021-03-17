@@ -299,13 +299,18 @@ def run_motevo(
     status = False
 
     while not status:
-        # Run MotEvo
-        result = shell_call(
-            ["motevo", sequences_file, motevo_parameters_path, wm_path], verbose=True
-        )
+        command = ["motevo", sequences_file, motevo_parameters_path, wm_path]
 
+        if verbose:
+            print(f"MotEvo shell command:\n" f"{' '.join(command)}")
+
+        # Run MotEvo
+        result = shell_call(command, verbose=True)
+
+        # Writing motevo report
         with open("motevo_report", "w") as f:
             f.write(result.stdout.decode("utf-8"))
+
         # Check result
         if result.returncode == 0:
             if verbose:

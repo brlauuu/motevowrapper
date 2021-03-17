@@ -30,7 +30,7 @@ MotEvo source code can be downloaded from the [SwissRegulon website](https://swi
 export PATH=$PATH:/path/to/motevo/bin
 ```
 
-## Running MotEvo from `motevomrapper`
+## Running MotEvo from `motevowrapper`
 
 Method for running MotEvo is `run_motevo(...)`. Parameter description can be found in the [MotEvo source code](https://swissregulon.unibas.ch/sr/software). I copied it here for better visibility.
 
