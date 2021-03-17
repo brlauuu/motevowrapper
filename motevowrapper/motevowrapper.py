@@ -287,7 +287,7 @@ def run_motevo(
             f.write(f"printsiteals {printsiteals}\n")
 
     if verbose:
-        logger.info(f"Generated parameters file at: {motevo_parameters_path}")
+        logger.info(f"Generated parameters file at: {motevo_parameters_path}.")
 
     # Remove existing MotEvo outputs
     if os.path.exists(sitefile):
@@ -300,14 +300,19 @@ def run_motevo(
 
     while not status:
         # Run MotEvo
-        result = shell_call(["motevo", sequences_file, motevo_parameters_path, wm_path])
+        result = shell_call(
+            ["motevo", sequences_file, motevo_parameters_path, wm_path], verbose=True
+        )
 
+        with open("motevo_report", "w") as f:
+            f.write(result.stdout.decode("utf-8"))
         # Check result
         if result.returncode == 0:
             if verbose:
                 logger.info(
                     f"MotEvo ran successfully! Please"
-                    f"check results at: {sitefile} and {priorfile}"
+                    f"check results at: {sitefile} and {priorfile}.\n"
+                    f"Check report at motevo_report."
                 )
             status = True
         else:
