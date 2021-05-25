@@ -115,7 +115,7 @@ sites_file, priors_file = run_motevo(
 
 For more information on how to use all of MotEvo's options, please check out [MotEvo source code](https://swissregulon.unibas.ch/sr/software) and [MotEvo paper](https://pubmed.ncbi.nlm.nih.gov/22334039/).
 
-## Parsing MotEvo files from MotevoWrapper
+## Parsing MotEvo files from `motevowrapper`
 
 MotEvo produces 2 files: `sites` and `priors` file. Usage of the package is simple. For a given MotEvo sites file stored at `/path/to/sites_MOTIF.wm` by calling:
 
